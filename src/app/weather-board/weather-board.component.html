@@ -1,0 +1,84 @@
+<div #contenedor class="categories" cdkDropListGroup>
+    <div class="board">
+        <ng-container *ngFor="let item of items;let i=index">
+            <div class="categories-item" (click)="selectWeather(i)" cdkDropList cdkDropListOrientation="horizontal"
+                [cdkDropListData]="{item:item,index:i}" (cdkDropListDropped)="drop($event)">
+                <div class="inner" cdkDrag>
+                    <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                    <ul class="item-info">
+                        <li [class]="items[i]?.color" *ngIf="items[i]?.date">{{items[i]?.date}}</li>
+                        <li [class]="items[i]?.color" *ngIf="items[i]?.kpi">{{items[i]?.kpi}}</li>
+                        <li [class]="items[i]?.color" *ngIf="items[i]?.temp">
+                            {{items[i]?.temp}} {{items[i]?.kpi === 'TempHighF' || items[i]?.kpi === 'TempLowF' || items[i]?.kpi === 'TempAvgF' ? '°'
+                            : 'MPH'}}</li>
+                    </ul>
+                    <h2 *ngIf="items[i]?.comment">Plan</h2>
+                    <p [class]="items[i]?.color" *ngIf="items[i]?.comment">{{items[i]?.comment}}</p>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <button id="toggle-btn" (click)="changeMenu()"><i id="arrow"
+            [ngClass]="{'right': toggle, 'left': !toggle}"></i></button>
+</div>
+<div id="side">
+    <div id="options">
+        <div id="error" *ngIf="errormsg !== ''">{{errormsg}}</div>
+        <div class="palette-container section">
+            <h2>TITLE</h2>
+            <input #title (keydown.enter)="addTitle(title.value)" (keyup)="onKey(title.value)"
+                [placeholder]="items[selected] ? items[selected]?.comment : ''">
+            <div id="currentColor" (click)="pop()" [class]="'rect ' + currentColor"></div>
+            <i id="arrowColor" [ngClass]="{'right': !toggleColor, 'left': toggleColor}"></i>
+            <div id="palette">
+                <div class="rect redishb" (click)="pickColor('redish')"></div>
+                <div class="rect bluishb" (click)="pickColor('bluish')"></div>
+                <div class="rect greenishb" (click)="pickColor('greenish')"></div>
+                <div class="rect defaultb" (click)="pickColor('default')"></div>
+            </div>
+        </div>
+
+
+        <div class="checkbox-date-container section">
+            <div id="container">
+                <div class="checkboxes" *ngFor="let option of kpi; let j = index">
+                    <input #kpioption type="radio" [checked]="option.checked" [value]="option.value"
+                        (change)="detect(j, $event)" />
+                    <div class="check"></div>
+                    <p class="optionName">{{option.name}}</p>
+                </div>
+            </div>
+            <div class="dropdown">
+                <div id="selectedDate">{{items[selected] ? items[selected].date : selectedDate}}</div>
+                <button class="dropbtn">Select Date</button>
+                <div class="dropdown-content date-toggle">
+                    <div class="data" *ngFor="let date of allDate" (click)="selectDate($event)">{{date[0]}}</div>
+                </div>
+            </div>
+        </div>
+
+        <button id="addTitle" (click)="addTitle(title.value)">Create/Update</button>
+
+        <div class="visual-container section">
+            <h2>VISUALIZATION {{subtitle}}</h2>
+            <button class="visualbtn" (click)="toggleChart()">{{visualBtnText}}</button>
+            <div class="dropdown">
+                <button class="dropbtn">Select <br /> Time Frame</button>
+                <div class="dropdown-content timeframe">
+                    <div (click)="selectTime($event)">Today</div>
+                    <div (click)="selectTime($event)">Yesterday</div>
+                    <div (click)="selectTime($event)">Week</div>
+                    <div (click)="selectTime($event)">Month</div>
+                </div>
+            </div>
+            <div class="weatherGrid visualGrid">
+                <div class="grid-item" *ngFor="let hdata of header">{{hdata}}</div>
+            </div>
+            <div class="data-container" *ngIf="data">
+                <div class="dataGrid visualGrid" *ngFor="let each of data">
+                    <div class="grid-item" *ngFor="let one of each">{{one}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
