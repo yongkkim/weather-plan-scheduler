@@ -5,17 +5,24 @@ Welcome to Weather App
 -In each board, you can save a weather information.
 
 -In order to add a title for a board, you should pick one of KPI(radio buttons) and date.
--Input field is optional for you to add some comments.
+
+-Input field is optional for you to add your plan.
+
 -You can simply modify any infomation by clicking the board and picking options again.
 
 -In order to see visualization chart, you should pick date and time frame.
+
 -The chart consists of 7 fields which are Date, TempHighF, TempLowF, TempAvgF, WindHighMPH, WindAvgMPH, and WindGustMPH.
 
--There are 4 options for time frame which are Today, Yesterday, Week, and Month.
--Today option is to show a chart only for the date you choose.
--Yesterday option is to show a chart with the date you choose and a date before the date.
--Week option is to show a chart for next 7 days from the date you choose.
--Week option is to show a chart for next 30 days from the date you choose.
+-There are 4 options for time frame which are Today, Yesterday, Week, and Month:
+
+->Today option is to show a chart only for the date you choose.
+
+->Yesterday option is to show a chart with the date you choose and a date before the date.
+
+->Week option is to show a chart for next 7 days from the date you choose.
+
+->Week option is to show a chart for next 30 days from the date you choose.
 
 I hope you would like it.
 
