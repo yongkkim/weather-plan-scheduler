@@ -94,10 +94,12 @@ export class WeatherBoardComponent implements OnInit {
       }
     } else {
       this.openTimeToggle = this.openTimeToggle ? false : true;
-      if (this.openTimeToggle) {
-        document.getElementsByClassName("timeframe")[0].setAttribute("style", "display: block");
-      } else {
-        document.getElementsByClassName("timeframe")[0].setAttribute("style", "display: none");
+      if (this.isMobile) {
+        if (this.openTimeToggle) {
+          document.getElementsByClassName("timeframe")[0].setAttribute("style", "display: block");
+        } else {
+          document.getElementsByClassName("timeframe")[0].setAttribute("style", "display: none");
+        }
       }
     }
   }
@@ -228,12 +230,14 @@ export class WeatherBoardComponent implements OnInit {
   }
 
   setErrorMsg = () => {
-    if (this.errormsg === "") {
-      document.getElementsByClassName("checkbox-date-container")[0].setAttribute("style", "margin-top: 40px");
-      document.getElementsByClassName("dropdown")[0].setAttribute("style", "top: 80px;");
-    } else {
-      document.getElementsByClassName("checkbox-date-container")[0].setAttribute("style", "margin-top: 65px");
-      document.getElementsByClassName("dropdown")[0].setAttribute("style", "top: 100px;");
+    if (this.isMobile) {
+      if (this.errormsg === "") {
+        document.getElementsByClassName("checkbox-date-container")[0].setAttribute("style", "margin-top: 40px");
+        document.getElementsByClassName("dropdown")[0].setAttribute("style", "top: 80px;");
+      } else {
+        document.getElementsByClassName("checkbox-date-container")[0].setAttribute("style", "margin-top: 65px");
+        document.getElementsByClassName("dropdown")[0].setAttribute("style", "top: 100px;");
+      }
     }
   }
 
@@ -333,13 +337,14 @@ export class WeatherBoardComponent implements OnInit {
 
   selectTime = (event) => {
     this.data = [];
-    this.subtitle = event.target.innerText === "Yesterday" ? "With " + event.target.innerText :
-      event.target.innerText === "Week" || event.target.innerText === "Month" ? "For " + event.target.innerText
-        : event.target.innerText === "Today" ? "For " + event.target.innerText : "";
 
     this.range = event.target.innerText;
 
     if (this.selectedDate !== "") {
+      this.subtitle = event.target.innerText === "Yesterday" ? "With " + event.target.innerText :
+        event.target.innerText === "Week" || event.target.innerText === "Month" ? "For " + event.target.innerText
+          : event.target.innerText === "Today" ? "For " + event.target.innerText : "";
+
       this.errormsg = "";
       this.setErrorMsg();
       let timerange = this.range === "Yesterday" ? -1 : this.range === "Week" ? 7 : this.range === "Month" ? 30 : 1;
