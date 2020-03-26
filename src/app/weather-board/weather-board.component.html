@@ -25,9 +25,9 @@
     <div id="options">
         <div id="error" *ngIf="errormsg !== ''">{{errormsg}}</div>
         <div class="palette-container section">
-            <h2>TITLE</h2>
+            <h2 *ngIf="h2_title">Comment</h2>
             <input #title (keydown.enter)="addTitle(title.value)" (keyup)="onKey(title.value)"
-                [placeholder]="items[selected] ? items[selected]?.comment : ''">
+                [placeholder]="items[selected] ? items[selected]?.comment : placeholder">
             <div id="currentColor" (click)="pop()" [class]="'rect ' + currentColor"></div>
             <i id="arrowColor" [ngClass]="{'right': !toggleColor, 'left': toggleColor}"></i>
             <div id="palette">
@@ -50,7 +50,7 @@
             </div>
             <div class="dropdown">
                 <div id="selectedDate">{{items[selected] ? items[selected].date : selectedDate}}</div>
-                <button class="dropbtn">Select Date</button>
+                <button class="dropbtn" (click)="clickForMobile(1)">Select Date</button>
                 <div class="dropdown-content date-toggle">
                     <div class="data" *ngFor="let date of allDate" (click)="selectDate($event)">{{date[0]}}</div>
                 </div>
@@ -61,9 +61,9 @@
 
         <div class="visual-container section">
             <h2>VISUALIZATION {{subtitle}}</h2>
-            <button class="visualbtn" (click)="toggleChart()">{{visualBtnText}}</button>
+            <button class="visualbtn" (click)="toggleChart($event)">{{visualBtnText}}</button>
             <div class="dropdown">
-                <button class="dropbtn">Select <br /> Time Frame</button>
+                <button class="dropbtn" (click)="clickForMobile(2)">Time Frame</button>
                 <div class="dropdown-content timeframe">
                     <div (click)="selectTime($event)">Today</div>
                     <div (click)="selectTime($event)">Yesterday</div>
@@ -71,14 +71,24 @@
                     <div (click)="selectTime($event)">Month</div>
                 </div>
             </div>
-            <div class="weatherGrid visualGrid">
+            <div *ngIf="!isMobile" class="weatherGrid visualGrid">
                 <div class="grid-item" *ngFor="let hdata of header">{{hdata}}</div>
             </div>
-            <div class="data-container" *ngIf="data">
+            <div class="data-container" *ngIf="data && !isMobile">
                 <div class="dataGrid visualGrid" *ngFor="let each of data">
                     <div class="grid-item" *ngFor="let one of each">{{one}}</div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="isMobile" id="forMobileChart">
+    <div class="weatherGrid visualGrid">
+        <div class="grid-item" *ngFor="let hdata of header">{{hdata}}</div>
+    </div>
+    <div class="data-container" *ngIf="data">
+        <div class="dataGrid visualGrid" *ngFor="let each of data">
+            <div class="grid-item" *ngFor="let one of each">{{one}}</div>
         </div>
     </div>
 </div>

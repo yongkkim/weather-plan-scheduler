@@ -37,16 +37,29 @@ export class WeatherBoardComponent implements OnInit {
   public response = [];
   public header = [];
   public data = []
-  public reader = new FileReader();
   public visualBtnText: string = "Show Chart";
   @ViewChild('title', { static: false }) weatherTitle: ElementRef;
   public subtitle: string = "";
   public toggleColor: boolean = false;
+  public h2_title: boolean = true;
+  public placeholder: string = "";
+  public openDateToggle: boolean = false;
+  public openTimeToggle: boolean = false;
+  public isMobile: boolean = false;
 
   constructor(private weatherBoardService: WeatherBoardService) {
+    if (window.screen.width <= 450) {
+      this.isMobile = true;
+      this.items = new Array<Titlecolor>(8);
+    }
   }
 
   ngOnInit() {
+    if (window.screen.width < 1440) {
+      this.h2_title = false;
+      this.placeholder = "Enter comment";
+    }
+
     this.weatherBoardService.readCsvData().subscribe(data => {
       this.response = data.split("\n");
       this.header = this.response[0].split(',').filter(word => {
@@ -65,10 +78,28 @@ export class WeatherBoardComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    if (window.screen.width <= 450) {
+      document.getElementsByClassName("dropdown")[0].setAttribute("style", "top: 80px;");
+    }
     document.getElementsByClassName("inner")[0].setAttribute("style", "border: 1px solid rgb(20, 97, 212);");
   }
 
-  test() {
+  clickForMobile = (toggle: number) => {
+    if (toggle === 1) {
+      this.openDateToggle = this.openDateToggle ? false : true;
+      if (this.openDateToggle) {
+        document.getElementsByClassName("date-toggle")[0].setAttribute("style", "display: block");
+      } else {
+        document.getElementsByClassName("date-toggle")[0].setAttribute("style", "display: none");
+      }
+    } else {
+      this.openTimeToggle = this.openTimeToggle ? false : true;
+      if (this.openTimeToggle) {
+        document.getElementsByClassName("timeframe")[0].setAttribute("style", "display: block");
+      } else {
+        document.getElementsByClassName("timeframe")[0].setAttribute("style", "display: none");
+      }
+    }
   }
 
   drop(event: CdkDragDrop<any>) {
@@ -81,7 +112,8 @@ export class WeatherBoardComponent implements OnInit {
     this.toggle = this.clicked ? true : !this.toggle;
 
     if (this.toggle) {
-      document.getElementById("side").style.width = "48%";
+      document.getElementById("side").style.width = window.screen.width <= 450 ? "40%" :
+        window.screen.width < 1440 ? "45%" : "48%";
       document.getElementById("side").style.opacity = "1";
       document.getElementsByClassName("categories")[0].setAttribute("style", "width: 51%");
       this.clicked = false;
@@ -90,7 +122,13 @@ export class WeatherBoardComponent implements OnInit {
       document.getElementById("side").style.width = "0";
       document.getElementById("side").style.opacity = "0";
       document.getElementsByClassName("categories")[0].setAttribute("style", "width: 100%");
+      if (this.isMobile) {
+        document.getElementById("forMobileChart").style.display = "none";
+        this.visualBtnText = "Show Chart";
+      }
     }
+
+
   }
 
   selectWeather = (num: number) => {
@@ -127,7 +165,7 @@ export class WeatherBoardComponent implements OnInit {
     this.data = [];
     this.subtitle = "";
     if (this.visualBtnText === "Close Chart") {
-      this.toggleChart();
+      this.toggleChart(event);
     }
     this.range = "";
 
@@ -223,9 +261,10 @@ export class WeatherBoardComponent implements OnInit {
     }
   }
 
-  toggleChart = () => {
+  toggleChart = (event) => {
 
     if (this.range !== "") {
+
       this.errormsg = "";
       let grids = document.getElementsByClassName("visualGrid");
       for (let i = 0; i < grids.length; i++) {
@@ -234,6 +273,16 @@ export class WeatherBoardComponent implements OnInit {
         } else {
           grids[i].setAttribute("style", "display: none;")
         }
+      }
+      if (this.isMobile) {
+        let pos = event.target.getBoundingClientRect();
+        document.getElementById("forMobileChart").style.top = pos.bottom + 30 + "px";
+        if (this.visualBtnText === "Show Chart") {
+          document.getElementById("forMobileChart").style.display = "block";
+        } else {
+          document.getElementById("forMobileChart").style.display = "block";
+        }
+
       }
 
       this.visualBtnText = this.visualBtnText === "Show Chart" ? "Close Chart" : "Show Chart";
@@ -267,7 +316,7 @@ export class WeatherBoardComponent implements OnInit {
 
   selectTime = (event) => {
     this.data = [];
-    this.subtitle = event.target.innerText === "Yesterday" ? "Compared to " + event.target.innerText :
+    this.subtitle = event.target.innerText === "Yesterday" ? "With " + event.target.innerText :
       event.target.innerText === "Week" || event.target.innerText === "Month" ? "For " + event.target.innerText
         : event.target.innerText === "Today" ? "For " + event.target.innerText : "";
 

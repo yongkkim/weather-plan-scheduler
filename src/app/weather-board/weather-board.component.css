@@ -75,11 +75,6 @@
     background-color: #ecfff5;
   }
 
-  /* .item-info li.boxTitle:last-child{
-    height:100px;
-    overflow-y: scroll;
-  } */
-
   .board{
     display: flex;
     flex-wrap: wrap;
@@ -450,21 +445,111 @@ input[type=radio]:checked ~ .check::before{
   }
 
 
-  @media screen and (max-width: 1440px){
-    #container{
-      width: 90%;
+  @media screen and (min-width: 1201px) and (max-width: 1440px){
+    #container{ width: 90%; }
+
+    .weatherGrid{ grid-template-columns: repeat(7, 75px); }
+
+    #palette > div{ margin-left: 3px; }
+
+    .inner p { height: 120px; }
+  }
+
+  @media screen and (min-width: 451px) and (max-width: 1200px){
+    .categories-item{
+      flex: 0 0 30%;
+      height: calc(70vh/3);
+    }
+  }
+  
+  @media screen and (max-width: 450px){
+    .categories-item{
+      flex: 0 0 45%;
+      height: calc(71vh/3);
     }
 
-    .weatherGrid{
-      grid-template-columns: repeat(7, 75px);
+    #options { padding: 40px 15px; }
+
+    .palette-container { flex-wrap: wrap; }
+
+    .palette-container input {
+      height: 15px;
+      flex-basis: 100%;
+      border: none;
+      border-bottom: 1px solid rgb(132, 189, 255);
     }
-    #palette > div{
-      margin-left: 3px;
+
+    .rect {
+      height: 15px;
+      width: 15px;
+      border-radius: 5px;
+      margin-top: 5px;
+    }
+
+    #arrowColor { margin-top: 5px; }
+
+    #container > * { margin: 5px 0; }
+
+    #container { height: unset; }
+
+    button#addTitle { width: 100%; }
+
+    .section:not(:first-child):not(:last-child){ margin-top:70px; }
+
+    .dropbtn, .visualbtn { height: 30px; }
+
+    .dropdown { position: absolute; }
+
+    .visual-container h2{ font-size:12px; }
+
+    .dropdown:hover .timeframe { width: 120px; }
+
+    .dropdown-content div, #selectedDate {
+      width: unset;
+      text-align: center;
+    }
+    .dropdown-content div{
+      background-color: #f9f9f9;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      width: 96px;
+    }
+    .dropdown-content div:hover{
+      background-color: #f1f1f1;
+      cursor: pointer;
+    }
+
+    .dropdown:hover .timeframe { display: block; }
+
+    .timeframe div { padding: 5px 10px; }
+
+    #forMobileChart{
+      width: 100%;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+    }
+
+    .weatherGrid, .dataGrid {
+      grid-template-columns: repeat(7, 44px);
+      background-color: #f9f9f9;
+    }
+
+    .grid-item {
+      font-size: 8px;
+      word-break: break-all;
+      background-color: #f9f9f9;
+    }
+
+    .item-info li.boxTitle { font-size: 9px; }
+
+    .inner h2 {
+      margin: 0;
+      font-size: 15px;
     }
 
     .inner p {
-      height: 120px;
+      height: 60px;
+      font-size: 13px;
     }
-    
 
   }

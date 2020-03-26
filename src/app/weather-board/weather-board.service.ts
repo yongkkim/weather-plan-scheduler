@@ -10,6 +10,6 @@ export class WeatherBoardService {
   constructor(private http: HttpClient) { }
 
   readCsvData = () => {
-    return this.http.get('../../assets/austin_weather.csv', { responseType: 'text' });
+    return this.http.get('assets/austin_weather.csv', { responseType: 'text' });
   }
 }
