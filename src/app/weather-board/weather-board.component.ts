@@ -122,6 +122,9 @@ export class WeatherBoardComponent implements OnInit {
       document.getElementById("side").style.width = "0";
       document.getElementById("side").style.opacity = "0";
       document.getElementsByClassName("categories")[0].setAttribute("style", "width: 100%");
+      this.errormsg = "";
+      this.setErrorMsg();
+
       if (this.isMobile) {
         document.getElementById("forMobileChart").style.display = "none";
         this.visualBtnText = "Show Chart";
@@ -182,6 +185,7 @@ export class WeatherBoardComponent implements OnInit {
     if ((this.selectedDate !== "" || (this.items[this.selected] && this.items[this.selected].date !== ""))
       && this.kpiValue !== "") {
       this.errormsg = "";
+      this.setErrorMsg();
       let kpidata;
       this.selectedDate = this.items[this.selected] && this.items[this.selected].date ?
         this.items[this.selected].date : this.selectedDate;
@@ -212,13 +216,24 @@ export class WeatherBoardComponent implements OnInit {
 
       this.removeEffect();
     } else {
-      this.errormsg = "Please select KPI and Date";
+      this.errormsg = "Select KPI and Date";
+      this.setErrorMsg();
     }
   }
 
   removeEffect = () => {
     for (let i = 0; i < this.inner.length; i++) {
       this.inner[i].setAttribute("style", "border: unset");
+    }
+  }
+
+  setErrorMsg = () => {
+    if (this.errormsg === "") {
+      document.getElementsByClassName("checkbox-date-container")[0].setAttribute("style", "margin-top: 40px");
+      document.getElementsByClassName("dropdown")[0].setAttribute("style", "top: 80px;");
+    } else {
+      document.getElementsByClassName("checkbox-date-container")[0].setAttribute("style", "margin-top: 65px");
+      document.getElementsByClassName("dropdown")[0].setAttribute("style", "top: 100px;");
     }
   }
 
@@ -266,6 +281,7 @@ export class WeatherBoardComponent implements OnInit {
     if (this.range !== "") {
 
       this.errormsg = "";
+      this.setErrorMsg();
       let grids = document.getElementsByClassName("visualGrid");
       for (let i = 0; i < grids.length; i++) {
         if (this.visualBtnText === "Show Chart") {
@@ -276,7 +292,7 @@ export class WeatherBoardComponent implements OnInit {
       }
       if (this.isMobile) {
         let pos = event.target.getBoundingClientRect();
-        document.getElementById("forMobileChart").style.top = pos.bottom + 30 + "px";
+        document.getElementById("forMobileChart").style.top = pos.bottom + 100 + "px";
         if (this.visualBtnText === "Show Chart") {
           document.getElementById("forMobileChart").style.display = "block";
         } else {
@@ -287,7 +303,8 @@ export class WeatherBoardComponent implements OnInit {
 
       this.visualBtnText = this.visualBtnText === "Show Chart" ? "Close Chart" : "Show Chart";
     } else {
-      this.errormsg = "Time Frame has to be selected";
+      this.errormsg = "Select Time Frame";
+      this.setErrorMsg();
     }
   }
 
@@ -324,6 +341,7 @@ export class WeatherBoardComponent implements OnInit {
 
     if (this.selectedDate !== "") {
       this.errormsg = "";
+      this.setErrorMsg();
       let timerange = this.range === "Yesterday" ? -1 : this.range === "Week" ? 7 : this.range === "Month" ? 30 : 1;
 
       let index;
@@ -336,19 +354,18 @@ export class WeatherBoardComponent implements OnInit {
         this.data.push(this.allDate[index]);
       } else if (timerange === -1) {
         if (index !== 0) this.data.push(this.allDate[index - 1]);
-        else this.errormsg = "Not enough data for yesterday (Click Show Chart anyways for available data)";
         this.data.push(this.allDate[index]);
       } else {
         if (index + timerange > this.allDate.length - 1) {
           timerange = this.allDate.length - 1 - index;
-          this.errormsg = "Not enough data for " + this.range.toLocaleLowerCase() + " (Click Show Chart anyways for available data)";
         }
         for (let i = index; i < index + timerange; i++) {
           this.data.push(this.allDate[i]);
         }
       }
     } else {
-      this.errormsg = "Date has not been chosen yet";
+      this.errormsg = "Select Date for chart";
+      this.setErrorMsg();
     }
 
     let grids = document.getElementsByClassName("visualGrid");

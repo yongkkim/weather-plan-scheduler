@@ -27,7 +27,7 @@
         <div class="palette-container section">
             <h2 *ngIf="h2_title">Comment</h2>
             <input #title (keydown.enter)="addTitle(title.value)" (keyup)="onKey(title.value)"
-                [placeholder]="items[selected] ? items[selected]?.comment : placeholder">
+                [placeholder]="items[selected] && items[selected]?.comment !== '' ? items[selected]?.comment : placeholder">
             <div id="currentColor" (click)="pop()" [class]="'rect ' + currentColor"></div>
             <i id="arrowColor" [ngClass]="{'right': !toggleColor, 'left': toggleColor}"></i>
             <div id="palette">
